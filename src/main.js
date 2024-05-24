@@ -1,18 +1,17 @@
 import iziToast from "izitoast";
-import "izitoast/dist/css/iziToast.min.css";
-import SimpleLightbox from "simplelightbox";
-import "simplelightbox/dist/simple-lightbox.min.css";
+import "izitoast/dist/css/iziToast.min.css"
+import SimpleLightbox from "simplelightbox"
+import "simplelightbox/dist/simple-lightbox.min.css"
+import axios from 'axios'
 import { getSearchResults } from './js/pixabay-api'
 import { renderImages } from './js/render-functions'
-import axios from 'axios';
-
 
 
 const search = document.querySelector('.search-input')
 const gallery = document.querySelector('.gallery')
 const load = document.querySelector('.loader')
 const form = document.querySelector('.form')
-const loadMore = document.querySelector('.load-more"')
+const loadMore = document.querySelector('load-more')
 
 const lightbox = new SimpleLightbox('.gallery a', {
     captionsData: 'alt',
@@ -69,6 +68,3 @@ function handleSearch(e) {
         })
     // iziToast.destroy()
 }
-
-
-
