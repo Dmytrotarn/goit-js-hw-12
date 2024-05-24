@@ -2,7 +2,6 @@ import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css"
 import SimpleLightbox from "simplelightbox"
 import "simplelightbox/dist/simple-lightbox.min.css"
-import axios from 'axios'
 import { getSearchResults } from './js/pixabay-api'
 import { renderImages } from './js/render-functions'
 
@@ -12,6 +11,8 @@ const gallery = document.querySelector('.gallery')
 const load = document.querySelector('.loader')
 const form = document.querySelector('.form')
 const loadMore = document.querySelector('load-more')
+let page = 1;
+const perPage = 15;
 
 const lightbox = new SimpleLightbox('.gallery a', {
     captionsData: 'alt',
@@ -20,7 +21,7 @@ const lightbox = new SimpleLightbox('.gallery a', {
 
 form.addEventListener('submit', handleSearch)
 
-function handleSearch(e) {
+async function handleSearch(e) {
     e.preventDefault()
 
     const searchValue = search.value.trim()
@@ -40,7 +41,7 @@ function handleSearch(e) {
     load.classList.remove('is-hidden')
 
 
-    getSearchResults(searchValue)
+    await getSearchResults(searchValue)
         .then((data) => {
             if (data.total === 0) {                             //нічого не знайдено
                 iziToast.show({
@@ -59,9 +60,7 @@ function handleSearch(e) {
             lightbox.refresh()
         })
         .catch(e => {
-            iziToast.error({
-                message: `${e}`
-            })
+            iziToast.error({ message: `${e}` })
         }).finally(() => {
             search.value = ''
             load.classList.add('is-hidden')
