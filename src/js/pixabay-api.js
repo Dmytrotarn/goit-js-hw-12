@@ -4,7 +4,7 @@ const BASE_URL = "https://pixabay.com/api/"
 
 
 
-export function getSearchResults(search) {
+export async function getSearchResults(search) {
     const searchParams = new URLSearchParams({
         key: API_KEY,
         q: search,
@@ -13,12 +13,10 @@ export function getSearchResults(search) {
         safesearch: true,
     });
 
-    return fetch(`${BASE_URL}?${searchParams}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(response.statusText)
-            }
-            return response.json();
-        })
+    const response = await fetch(`${BASE_URL}?${searchParams}`);
+    if (!response.ok) {
+        throw new Error(response.statusText);
+    }
+    return await response.json();
 
 }
