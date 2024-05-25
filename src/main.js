@@ -15,7 +15,7 @@ const loadMore = document.querySelector('.load-more')
 let userInput = ''
 let page = 1;
 const perPage = 15;
-
+let totalPages
 
 const lightbox = new SimpleLightbox('.gallery a', {
     captionsData: 'alt',
@@ -60,35 +60,59 @@ async function handleSearch(e) {
             gallery.innerHTML = ''
             form.reset()
             return
-        } else
-            if (total > 15) {
-                loadMore.classList.remove('hidden')
-            }
-
+        }
         gallery.innerHTML = renderImages(hits)
         lightbox.refresh()
-
-
+        totalPages = Math.ceil(totalHits / perPage)
+        //  більше ніж одна сторінка
+        if (totalPages > 1) {
+            loadMore.classList.remove('hidden')
+        }
     }
     catch (error) {
         iziToast.error({ message: `${error}` })
     }
     form.reset()
     load.classList.add('hidden')
-
 }
 
+const scrollOnLoad = () => {
+    const lastItem = document.querySelector('.item-results');
+    const imageHeight = lastItem.getBoundingClientRect().height;
+    const scrollHeight = imageHeight * 2;
+    console.log(scrollHeight);
+
+    window.scrollBy({
+        top: scrollHeight,
+        behavior: 'smooth',
+    });
+};
+
+
+
 const onLodadMore = async e => {
+    load.classList.remove('hidden')
     try {
         page += 1
-        load.classList.remove('hidden')
 
+        const { hits } = await getSearchResults(userInput, page)
 
-        const { hits } = await getSearchResults(search, page)
         gallery.insertAdjacentHTML('beforeend', renderImages(hits))
+        // плавне прокрручування
+        scrollOnLoad()
+        // window.scrollBy({
+        //     top: 600,
+        //     behavior: 'smooth',
+        // })
 
+        lightbox.refresh()
+        // кінець колекції
+        if (page > totalPages) {
+            loadMore.classList.add('hidden')
+        }
+        load.classList.add('hidden')
     } catch (error) {
-        console.log(error);
+        iziToast.error({ message: `${error}` })
     }
 }
 
