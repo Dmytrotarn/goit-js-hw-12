@@ -13,10 +13,10 @@ export async function getSearchResults(search, page) {
             image_type: 'photo',
             safesearch: true,
             page: page,
+            orientation: 'horizontal',
             per_page: perPage,
         }
     })
 
     return response.data
-
 }
