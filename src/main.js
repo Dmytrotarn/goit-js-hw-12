@@ -90,7 +90,7 @@ const scrollOnLoad = () => {
 
 
 
-const onLodadMore = async e => {
+const onLodadMore = async () => {
     load.classList.remove('hidden')
     try {
         page += 1
@@ -100,15 +100,16 @@ const onLodadMore = async e => {
         gallery.insertAdjacentHTML('beforeend', renderImages(hits))
         // плавне прокрручування
         scrollOnLoad()
-        // window.scrollBy({
-        //     top: 600,
-        //     behavior: 'smooth',
-        // })
 
         lightbox.refresh()
         // кінець колекції
-        if (page > totalPages) {
+        if (page >= totalPages) {
             loadMore.classList.add('hidden')
+            iziToast.show({
+                message: "We're sorry, but you've reached the end of search results.",
+                color: 'blue',
+                position: 'topRight',
+            })
         }
         load.classList.add('hidden')
     } catch (error) {
