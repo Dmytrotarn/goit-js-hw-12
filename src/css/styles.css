@@ -160,6 +160,7 @@ button:hover {
 .loads-container {
   display: flex;
   justify-content: center;
+  align-items:center;
 }
 
 .loader {
